@@ -50,4 +50,19 @@ INNER JOIN titles as t
 ON (e.emp_no = t.emp_no)
 WHERE (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31')
 AND (de.to_date = '9999-01-01')
-ORDER BY e.emp_no
+ORDER BY e.emp_no, de.to_date DESC;
+
+-- Deliverable 3:
+-- The number of employees by their most recent job title who eligible for the mentorship program.
+SELECT COUNT(mt.title), mt.title
+INTO mentorship_titles
+FROM mentorship_eligibilty as mt
+GROUP BY mt.title
+ORDER BY count DESC;
+
+-- Number of employees each mentor will have to train
+SELECT ROUND((retiring_titles.count / mentorship_titles.count), 2) AS result, retiring_titles.title
+INTO mentorship_count
+FROM retiring_titles INNER JOIN mentorship_titles
+ON retiring_titles.title = mentorship_titles.title
+ORDER BY retiring_titles.title 
